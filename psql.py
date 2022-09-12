@@ -1,7 +1,4 @@
-#akses data ke database
-#cara pakai library psycopg2, kalau mau akses data/ lakukan query ke postgresql pake library ini
-
-import psycopg2 as pg # library untuk akses database, ini library postgree
+import psycopg2 as pg 
 
 #credential
 host = "35.xxx.xx.xxx"
@@ -11,27 +8,21 @@ user = "xxxxxres"
 password = "xxxxxxxx"
 dsn = "dbname=" + database + " user=" + user + " host=" + host + " port=" + port + " password=" + password
 
-#dsn = data source name
-
-#conn = pg.connect(dsn) ------------ ini untuk connect db, syntaxnya juga bisa pakai seperti dibawah ini
 conn = pg.connect(dbname=database,host=host, port=port, user=user,password=password)
 
- # fungsi untuk baca dari database
-def read_from_db(conn, query): #ngambil 2 parameter, conect dan query
-    cur = conn.cursor() #cur untuk mengarahkan ke database supaya bisa jalanin query, conn.cursor adalah library psycopg
+def read_from_db(conn, query): 
+    cur = conn.cursor() 
     cur.execute(query)
     data = cur.fetchall()
-    cur.close() # setiap bikin cursor langsung di close
+    cur.close() 
     return data
 
-#fungsi untuk eksekusi query
 def exec_db(conn, query, data=None):
     cur = conn.cursor()
     cur.execute(query, data)
-    conn.commit() #harus di commit untuk menyimpan perubahan atau supaya mendokumentasikan di DB
+    conn.commit() 
     cur.close()
 
-# fungsi untuk baca data customer
 def read_customer():
     query = """
             select customer_unique_id,customer_id, customer_zip_code_prefix, customer_city, customer_state 
@@ -67,10 +58,6 @@ def update_customer():
     """
     exec_db(conn, query)
     print("berhasil update data")
-
-#untuk memanggil atau menampilkan hasil query customer, coba perintah dibawah ini (data....., print.....)
-#data = read_customer()
-#print(data)
 
 write_customer()
 #update_customer()
